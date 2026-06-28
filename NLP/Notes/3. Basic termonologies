@@ -1,0 +1,48 @@
+You are doing great! Welcome to your first official vocabulary lesson in NLP.
+
+When you start coding, the instructor is going to use a few specific words over and over again. Think of these as the "building blocks" of how a computer looks at human text. Let’s break them down using super simple terms. 🕵️‍♂️✨
+
+---
+
+## 📚 The 4 Core NLP Terms
+
+Imagine you have a book filled with stories. Here is how AI labels everything:
+
+* **Corpus (The Whole Thing):** This is your entire dataset or paragraph. If you feed an AI 10,000 emails to find spam, that whole pile of text is called the *corpus*. 📁
+* **Document / Sentence (The Pieces):** This is a single sentence or a distinct line of text inside your corpus. 📝
+* **Words (The Components):** Every single individual word written in the text. 🗣️
+* **Vocabulary (The Unique List):** This is the total number of *unique* words used, ignoring any repeats. It's like the AI's private dictionary for that specific text. 📖
+
+> **The "Juice" Example from the Video:**
+> *Sentence 1:* "I like to drink apple juice."
+> *Sentence 2:* "My friend likes mango juice."
+> Total words = **11**
+> Total Vocabulary (Unique words) = **10** (Because the word "juice" repeats, we only count it once!)
+
+---
+
+## 🪓 What is Tokenization?
+
+Before an AI can understand a big paragraph, it needs to chop it into smaller, bite-sized pieces. These pieces are called **tokens**, and the process of chopping them up is called **Tokenization**.
+
+There are two main ways to chop text:
+
+### 1. Paragraph ➡️ Sentences (Sentence Tokenization)
+
+The AI looks for punctuation marks like periods (`.`) or exclamation points (`!`) to slice a giant paragraph into individual sentences.
+
+* *Input:* "My name is Krish. I am a YouTuber."
+* *Tokens Created:* `["My name is Krish.", "I am a YouTuber."]`
+
+### 2. Sentence ➡️ Words (Word Tokenization)
+
+The AI takes a sentence and slices it into individual words. This is a critical step because, later on, we will convert each individual word into a number (a vector) so the computer can read it.
+
+* *Input:* "I love AI"
+* *Tokens Created:* `["I", "love", "AI"]`
+
+---
+
+## 🛡️ Why do we do this?
+
+Computers can't read a whole sentence at once. By breaking text down into individual word tokens, we make it clean and organized so the AI can look at each word one by one, clean out the useless filler words, and eventually convert them into numbers it can understand! 🤖🔢

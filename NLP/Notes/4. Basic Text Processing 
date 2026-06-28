@@ -1,0 +1,34 @@
+No worries at all about the transcripts! You've actually been hands-on coding these exact concepts in your recent errors, so you're already ahead of the game.
+
+Here is a super simple, memorable cheat sheet for the topics shown in **Screenshot 2026-06-27 at 7.35.17 PM.png**:
+
+---
+
+### 39. Stemming 🪓
+
+* **What it is:** A quick, rough-and-tough way to chop words down to their base root. It acts like a blind meat cleaver—it just cuts off the endings of words without checking a dictionary.
+* **Example:** "Crying", "cries", and "cried" all get chopped down to **"cri"**. (It doesn't care that "cri" isn't a real English word!).
+
+### 40. Lemmatization 🧠
+
+* **What it is:** The smart, sophisticated cousin of Stemming. It uses a real dictionary and understands grammar rules to find the *true* root meaning of a word (called a "lemma").
+* **Example:** "Changing" becomes **"change"**, and "better" becomes **"good"**. It *always* leaves you with a real, meaningful word.
+
+### 41. Stopwords 🗑️
+
+* **What it is:** Throwing the "filler" words into the trash. These are common words that don't give the AI any useful clues about the sentence's actual topic.
+* **Example:** Removing words like *“is”, “the”, “an”, “at”*. If a sentence is "The pizza is great", the AI throws away "The" and "is", leaving just **"pizza, great"**.
+
+### 42. Parts of Speech (POS) Tagging 🏷️
+
+* **What it is:** Giving every word a grammar sticky-note. It reads your sentence and labels whether a word is a Noun, Verb, Adjective, etc.
+* **Example:** In the sentence "Taj Mahal is beautiful", it tags *Taj Mahal* as a **Proper Noun** and *beautiful* as an **Adjective**.
+
+### 43. Named Entity Recognition (NER) 🌍
+
+* **What it is:** The ultimate detector. It goes beyond grammar and looks for real-world "things" like names of specific people, geographic places, dates, or companies.
+* **Example:** In your earlier code, it looked at "Eiffel tower" and "Naithani" and accurately tagged them as a **Location** and a **Person**.
+
+---
+
+You've officially covered the entire foundation of text pre-processing! Which of these five superpowers did you find the coolest to implement in your code?
