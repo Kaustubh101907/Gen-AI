@@ -127,3 +127,64 @@ Now, both features are roughly the same size! The neural network can evaluate th
 Notice that in this prediction file, you used **`scaler.transform(input_df)`** without the word `fit`.
 
 This is incredibly important! You do **not** want the scaler to calculate a brand new average based on this *one* new customer. You are telling it: *"Use the exact same scaling math rules you originally learned from our training textbook to scale this new customer."* This ensures your production predictions remain beautifully accurate!
+
+
+Let’s lift up the hood and look at the exact gears turning inside these three blocks of code. You already know *what* they are doing conceptually, so we will focus entirely on **how** the libraries (Pandas and Scikit-Learn) are manipulating the data matrices step-by-step.
+
+---
+
+## 🗺️ Cell 1: The One-Hot Encoding Breakdown
+
+```python
+geo_encoded = onehot_encoder_geo.transform([[input_data['Geography']]]).toarray()
+geo_encoded_df = pd.DataFrame(geo_encoded, columns=onehot_encoder_geo.get_feature_names_out(['Geography']))
+
+```
+
+### Line 1 Mechanics:
+
+* **`input_data['Geography']`**: Extracts the raw text string `"France"` from your dictionary.
+* **`[[ ... ]]` (The Double Brackets)**: Scikit-learn transformers are incredibly strict. They refuse to look at single pieces of text. They demand a **2D array** (rows and columns). Wrapping it in double brackets tricks the tool into thinking you are passing a matrix with 1 row and 1 column: `[["France"]]`.
+* **`.transform(...)`**: The Scikit-Learn library checks its internal memory from training. It remembers that it learned three countries in alphabetical order (*France, Germany, Spain*). It matches `"France"` to index 0.
+* **`.toarray()`**: By default, to save computer RAM, Scikit-Learn outputs a highly compressed mathematical object called a *SciPy Sparse Matrix*. If you try to print a sparse matrix, it looks like a weird coordinate map. Adding `.toarray()` forces Python to unpack it into a standard, readable NumPy array: `[[1.0, 0.0, 0.0]]`.
+
+### Line 2 Mechanics:
+
+* **`onehot_encoder_geo.get_feature_names_out(['Geography'])`**: This Scikit-Learn method automatically generates your new text headers. It takes your original column name and tacks on the category names it memorized during training, generating an array of strings: `['Geography_France', 'Geography_Germany', 'Geography_Spain']`.
+* **`pd.DataFrame(geo_encoded, columns=...)`**: The Pandas library steps in here. It takes the raw numbers from your NumPy array (`[[1.0, 0.0, 0.0]]`) and glues the new text headers onto them, creating a neat, independent 1-row data table (`geo_encoded_df`).
+
+---
+
+## 🏷️ Cell 2: The Label Encoding Breakdown
+
+```python
+input_df['Gender'] = label_encoder_gender.transform(input_df['Gender'])
+
+```
+
+### Line Mechanics:
+
+* **`input_df['Gender']`**: Pandas isolates the specific data column holding the string value `["Male"]`. Unlike One-Hot encoding, `LabelEncoder` expects a simple 1D list or Pandas Series, so no double brackets are needed here.
+* **`.transform(...)`**: Scikit-Learn looks up its binary memory key from training (*Female = 0, Male = 1*). It spots `"Male"` and translates it instantly into the integer `1`.
+* **The `=` Assignment**: Pandas overwrites the old text value inside your original DataFrame, cleanly swapping the text row value for your brand-new numeric code.
+
+---
+
+## ✂️ Cell 3: The Concatenation Stitch-Up
+
+```python
+input_df = pd.concat([input_df.drop("Geography", axis=1), geo_encoded_df], axis=1)
+
+```
+
+This single line actually executes two massive Pandas matrix operations back-to-back:
+
+### Step A: The Drop Operation
+
+* **`input_df.drop("Geography", axis=1)`**: Before merging the tables, you have to get rid of the original text column so it doesn't muck up the model.
+* **`axis=1`**: This is a crucial Pandas setting. Setting `axis=0` tells Pandas to look for *rows* vertically down, while setting **`axis=1` tells Pandas to scan columns horizontally across**. This command successfully snips out the text `"Geography"` column from left to right.
+
+### Step B: The Concatenation Operation
+
+* **`pd.concat([ ... , ... ], axis=1)`**: This is the Pandas "glue" function. It takes a list of two separate tables: your modified original dataframe (minus geography) and your new 3-column country matrix (`geo_encoded_df`).
+* **`axis=1` (Again)**: This specifies the direction of the join. Instead of stacking the tables on top of each other vertically (which is what happens with rows), `axis=1` pushes them together side-by-side **horizontally**, combining them into one single, master row of data.
